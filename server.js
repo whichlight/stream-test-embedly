@@ -1,13 +1,15 @@
+#!/usr/bin/env node
 var fs = require('fs'),
     BufferStream = require('bufferstream'),
     http = require('http'),
     hyperquest = require('hyperquest');
 
-var apikey = process.env['EMBEDLY_KEY']
-var url = "http://stream.embed.ly?key=" + apikey;
+var streamkey = process.env['EMBEDLY_STREAM_KEY']
+var apikey = process.env['EMBEDLY_API_KEY']
+var url = "http://stream.embed.ly?key=" + streamkey;
 var timeout;
 var EMBEDLY_HOST = "http://useastapi.embed.ly";
-var FRACTION_EMBEDDED = "0.5"; //0 to 1 , increase to embed more
+var FRACTION_EMBEDDED = process.env['EMBEDLY_SAMPLE_SIZE'] || "0.5"; //0 to 1 , increase to embed more
 
 var bs = new BufferStream({size:'flexible'});
 bs.enable();
@@ -28,21 +30,25 @@ function startStream(){
 }
 
 function processUrls(line){
-  var data = JSON.parse(line);
-  if(data['embed']){
-    var link = data['url'];
-    if(Math.random() < FRACTION_EMBEDDED){
-      runEmbed(link);
+  try {
+    var data = JSON.parse(line);
+    if(data['embed']){
+      var link = data['url'];
+      if(Math.random() < FRACTION_EMBEDDED){
+        runEmbed(link);
+      }
     }
+  } catch(e) {
+    console.error(line);
+    console.error(e.stack);
   }
 }
 
 function runEmbed(link){
-    console.log(link);
     var call = EMBEDLY_HOST + "/1/oembed?url="+ link + "&key=" + apikey;
     var req = hyperquest.get(call);
     req.on('response', function(res){
-        console.log(link);
+        console.log('^_^ -> ' + link);
     });
     req.on('error', function(res){
         console.log('oops');
