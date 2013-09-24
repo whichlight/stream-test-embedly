@@ -2,7 +2,8 @@
 var fs = require('fs'),
     BufferStream = require('bufferstream'),
     http = require('http'),
-    hyperquest = require('hyperquest');
+    hyperquest = require('hyperquest'),
+    colors = require('colors');
 
 var streamkey = process.env['EMBEDLY_STREAM_KEY']
 var apikey = process.env['EMBEDLY_API_KEY']
@@ -48,7 +49,7 @@ function runEmbed(link){
     var call = EMBEDLY_HOST + "/1/oembed?url="+ link + "&key=" + apikey;
     var req = hyperquest.get(call);
     req.on('response', function(res){
-        console.log('^_^ -> ' + link);
+        console.log('^_^ '.cyan +  '-> '.green + link.underline);
     });
     req.on('error', function(res){
         console.log('oops');
