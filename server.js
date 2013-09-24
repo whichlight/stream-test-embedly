@@ -7,6 +7,7 @@ var apikey = process.env['EMBEDLY_KEY']
 var url = "http://stream.embed.ly?key=" + apikey;
 var timeout;
 var EMBEDLY_HOST = "http://useastapi.embed.ly";
+var FRACTION_EMBEDDED = "0.5"; //0 to 1 , increase to embed more
 
 var bs = new BufferStream({size:'flexible'});
 bs.enable();
@@ -30,7 +31,7 @@ function processUrls(line){
   var data = JSON.parse(line);
   if(data['embed']){
     var link = data['url'];
-    if(Math.random() < 0.5){
+    if(Math.random() < FRACTION_EMBEDDED){
       runEmbed(link);
     }
   }
