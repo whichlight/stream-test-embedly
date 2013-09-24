@@ -1,0 +1,8 @@
+Takes URLs from stream.embed.ly and sends them to the embedly API.
+
+    $ EMBEDLY_SAMPLE_SIZE=0.1 EMBEDLY_API_KEY=myapikey EMBEDLY_STREAM_KEY=mystreamkey EMBEDLY_HOST=api.embed.ly ./server.js
+
+ * EMBEDLY_SAMPLE_SIZE - value between 0 and 1. The amount of URLS that come from stream that we will send to the API. Default is 0.5.
+ * EMBEDLY_HOST - The embedly host to use. Default is api.embed.ly.
+ * EMBEDLY_API_KEY - An Embedly api key used to make api requests.
+ * EMBEDLY_STREAM_KEY - An Embedly api key used to listen to the embedly stream.
